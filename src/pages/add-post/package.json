@@ -1,0 +1,6 @@
+{
+	"name": "add-post",
+	"version": "0.0.0",
+	"main": "AddPost.js",
+	"private": true
+}

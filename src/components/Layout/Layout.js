@@ -15,6 +15,7 @@ import Header from "../Header";
 import Sidebar from "../Sidebar";
 
 // pages
+import AddPost from "../../pages/add-post";
 import Dashboard from "../../pages/dashboard";
 import Typography from "../../pages/typography";
 import Notifications from "../../pages/notifications";
@@ -44,6 +45,7 @@ function Layout(props) {
           >
             <div className={classes.fakeToolbar} />
             <Switch>
+              <Route path="/app/add-post" component={AddPost} />
               <Route path="/app/dashboard" component={Dashboard} />
               <Route path="/app/typography" component={Typography} />
               <Route path="/app/tables" component={Tables} />
