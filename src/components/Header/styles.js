@@ -14,6 +14,7 @@ export default makeStyles(theme => ({
     },
   },
   appBar: {
+    backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
     width: "100vw",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["margin"], {
@@ -64,10 +65,10 @@ export default makeStyles(theme => ({
     },
   },
   searchIconOpened: {
+    color: "white",
     right: theme.spacing(1.25),
   },
   inputRoot: {
-    color: "inherit",
     width: "100%",
   },
   inputInput: {
@@ -155,5 +156,9 @@ export default makeStyles(theme => ({
   },
   sendButtonIcon: {
     marginLeft: theme.spacing(2),
+  },
+  logo: {
+    height: "35px",
+    width: "130px",
   },
 }));

@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 // components
-import PageTitle from "../../components/PageTitle";
+import PageTitle from "../../components/PageTitle/PageTitle";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -40,6 +40,13 @@ const useStyles = makeStyles(theme => ({
   buttonDiv: {
     display: "flex",
   },
+  submitButton: {
+    backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
+    color: "white",
+    "&:hover": {
+      backgroundImage: "linear-gradient(90deg, #FFBB94 0%, #FF889D 100%)",
+    },
+  },
 }));
 
 export default function Tables() {
@@ -55,14 +62,18 @@ export default function Tables() {
     setCategoryName(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
     if (categoryName !== "" && selectedFile !== null) {
       const fd = new FormData();
       fd.append("category", categoryName);
       fd.append("image", selectedFile.name);
       console.log(fd);
+      e.preventDefault();
       axios
-        .post("http://localhost:8009/api/v1/post/category/ops/", fd)
+        .post(
+          "https://cors-anywhere.herokuapp.com/http://xdate.ml/api/v1/post/category/ops/",
+          fd,
+        )
         .then(response => {
           console.log(response);
         });
@@ -71,7 +82,7 @@ export default function Tables() {
 
   return (
     <>
-      <PageTitle title="Add Post" />
+      <PageTitle title="Add Category" />
       <Grid container spacing={4}>
         <Grid item xs={12} sm={10} md={8} lg={6}>
           <Paper className={classes.displayPaper}>
@@ -112,10 +123,10 @@ export default function Tables() {
 
               <FormControl>
                 <Button
-                  color="primary"
                   variant="contained"
                   type="submit"
                   onClick={handleSubmit}
+                  className={classes.submitButton}
                 >
                   Submit
                 </Button>

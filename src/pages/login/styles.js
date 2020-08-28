@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
     left: 0,
   },
   logotypeContainer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
     width: "60%",
     height: "100%",
     display: "flex",

@@ -7,7 +7,6 @@ import {
   Menu,
   MenuItem,
   Fab,
-  Link
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -24,9 +23,10 @@ import classNames from "classnames";
 import useStyles from "./styles";
 
 // components
-import { Badge, Typography, Button } from "../Wrappers/Wrappers";
+import { Badge, Typography } from "../Wrappers/Wrappers";
 import Notification from "../Notification/Notification";
 import UserAvatar from "../UserAvatar/UserAvatar";
+import { ReactComponent as Logo } from "../../images/logo.svg";
 
 // context
 import {
@@ -136,11 +136,11 @@ export default function Header(props) {
             />
           )}
         </IconButton>
+        <Logo className={classes.logo} />
         <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+          Admin Dashboard
         </Typography>
         <div className={classes.grow} />
-        <Button component={Link} href="https://flatlogic.com/templates/react-material-admin-full" variant={"outlined"} color={"secondary"} style={{marginRight: 24}}>Unlock full version</Button>
         <div
           className={classNames(classes.search, {
             [classes.searchFocused]: isSearchOpen,
