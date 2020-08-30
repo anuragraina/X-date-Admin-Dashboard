@@ -49,34 +49,48 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Tables() {
+export default function AddCategory() {
   const classes = useStyles();
   const [selectedFile, setSelectedFile] = useState(null);
   const [categoryName, setCategoryName] = useState("");
 
   const handleUpload = event => {
-    setSelectedFile(event.target.files[0]);
+    const image = event.target.files[0];
+
+    if (image.size < 1048576) setSelectedFile(event.target.files[0]);
+    else alert("Image size should be less than 1 MB!!!");
   };
 
   const handleCategory = event => {
     setCategoryName(event.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     if (categoryName !== "" && selectedFile !== null) {
       const fd = new FormData();
-      fd.append("category", categoryName);
-      fd.append("image", selectedFile.name);
-      console.log(fd);
-      e.preventDefault();
-      axios
-        .post(
-          "https://cors-anywhere.herokuapp.com/http://xdate.ml/api/v1/post/category/ops/",
+      fd.append("name", categoryName);
+      fd.append("file", selectedFile, "file");
+
+      try {
+        const response = await axios.post(
+          "https://xdate.ml/api/v1/post/category/ops/",
           fd,
-        )
-        .then(response => {
-          console.log(response);
-        });
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          setCategoryName("");
+          setSelectedFile(null);
+          alert("Category added successfully...");
+        }
+      } catch (err) {
+        alert(err.message);
+      }
     }
   };
 

@@ -10,6 +10,7 @@ import Header from "../Header";
 import Sidebar from "../Sidebar";
 
 // pages
+import ViewCategories from "../../pages/view-categories";
 import AddCategory from "../../pages/add-category";
 import Dashboard from "../../pages/dashboard";
 import Typography from "../../pages/typography";
@@ -40,6 +41,7 @@ function Layout(props) {
         >
           <div className={classes.fakeToolbar} />
           <Switch>
+            <Route path="/app/view-categories" component={ViewCategories} />
             <Route path="/app/add-category" component={AddCategory} />
             <Route path="/app/dashboard" component={Dashboard} />
             <Route path="/app/typography" component={Typography} />
