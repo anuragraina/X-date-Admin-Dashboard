@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import classnames from "classnames";
 
 // styles
@@ -11,14 +11,13 @@ import Sidebar from "../Sidebar";
 
 // pages
 import ViewCategories from "../../pages/view-categories";
-import AddCategory from "../../pages/add-category";
-import Dashboard from "../../pages/dashboard";
-import Typography from "../../pages/typography";
-import Notifications from "../../pages/notifications";
-import Maps from "../../pages/maps";
-import Tables from "../../pages/tables";
-import Icons from "../../pages/icons";
-import Charts from "../../pages/charts";
+// import Dashboard from "../../pages/dashboard";
+// import Typography from "../../pages/typography";
+// import Notifications from "../../pages/notifications";
+// import Maps from "../../pages/maps";
+// import Tables from "../../pages/tables";
+// import Icons from "../../pages/icons";
+// import Charts from "../../pages/charts";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
@@ -42,8 +41,7 @@ function Layout(props) {
           <div className={classes.fakeToolbar} />
           <Switch>
             <Route path="/app/view-categories" component={ViewCategories} />
-            <Route path="/app/add-category" component={AddCategory} />
-            <Route path="/app/dashboard" component={Dashboard} />
+            {/* <Route path="/app/dashboard" component={Dashboard} />
             <Route path="/app/typography" component={Typography} />
             <Route path="/app/tables" component={Tables} />
             <Route path="/app/notifications" component={Notifications} />
@@ -54,7 +52,7 @@ function Layout(props) {
             />
             <Route path="/app/ui/maps" component={Maps} />
             <Route path="/app/ui/icons" component={Icons} />
-            <Route path="/app/ui/charts" component={Charts} />
+            <Route path="/app/ui/charts" component={Charts} /> */}
           </Switch>
         </div>
       </>
