@@ -12,9 +12,13 @@ export default function ViewCategories() {
 
   useEffect(() => {
     axios
-      .get("https://xdate.ml/api/v1/post/category")
+      .get("https://xdate.ml/api/v1/post/category/ops")
       .then(response => {
-        setCategories(response.data.category);
+        const category = response.data.category;
+        category.sort((a, b) => {
+          return b.id - a.id;
+        });
+        setCategories(category);
       })
       .catch(error => {
         alert(error.message);

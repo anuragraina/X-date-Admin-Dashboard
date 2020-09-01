@@ -11,7 +11,9 @@ import {
   Fade,
   Backdrop,
   Switch,
+  IconButton,
 } from "@material-ui/core";
+import UpdateIcon from "@material-ui/icons/Update";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -42,12 +44,15 @@ const useStyles = makeStyles(theme => ({
   buttonDefault: {
     width: "100%",
   },
-  buttonUploaded: {
-    width: "50%",
-    marginRight: "1rem",
+  image: {
+    width: "100%",
   },
   buttonDiv: {
-    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonItem: {
+    padding: "0.5rem",
   },
   submitButton: {
     backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
@@ -71,11 +76,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AddCategory() {
+export default function UpdateCategory(props) {
   const classes = useStyles();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [categoryName, setCategoryName] = useState("");
-  const [enabled, setEnabled] = useState(true);
+  const [categoryName, setCategoryName] = useState(props.category.name);
+  const [enabled, setEnabled] = useState(props.category.active);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -83,7 +88,7 @@ export default function AddCategory() {
   };
 
   const handleClose = () => {
-    setCategoryName("");
+    setCategoryName(props.category.name);
     setSelectedFile(null);
     setOpen(false);
   };
@@ -105,15 +110,35 @@ export default function AddCategory() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (categoryName !== "" && selectedFile !== null) {
-      const fd = new FormData();
-      fd.append("name", categoryName);
-      fd.append("file", selectedFile, "file");
-      fd.append("active", enabled);
+    let flag = 0;
 
+    const fd = new FormData();
+
+    if (categoryName === "") {
+      alert("Category name cannot be empty!!!");
+      setCategoryName(props.category.name);
+    } else {
+      if (categoryName !== props.category.name) {
+        fd.append("name", categoryName);
+        flag++;
+      }
+    }
+
+    if (selectedFile !== null) {
+      fd.append("file", selectedFile, "file");
+      flag++;
+    }
+
+    if (enabled !== props.category.active) {
+      fd.append("active", enabled);
+      flag++;
+    }
+
+    if (flag > 0) {
+      fd.append("category_id", props.category.id);
       try {
         const response = await axios.post(
-          "https://xdate.ml/api/v1/post/category/",
+          "https://xdate.ml/api/v1/post/category/ops/",
           fd,
           {
             headers: {
@@ -123,7 +148,7 @@ export default function AddCategory() {
         );
 
         if (response.status === 200) {
-          alert("Category added successfully...");
+          alert("Category updated successfully...");
           window.location.reload();
         }
       } catch (err) {
@@ -132,20 +157,15 @@ export default function AddCategory() {
 
       handleClose();
     } else {
-      alert("All fields are required!!!");
+      alert("Nothing updated!");
     }
   };
 
   return (
     <>
-      <Button
-        classes={{ root: classes.button }}
-        variant="contained"
-        color="secondary"
-        onClick={handleOpen}
-      >
-        Add Category
-      </Button>
+      <IconButton color="primary" aria-label="Update" onClick={handleOpen}>
+        <UpdateIcon />
+      </IconButton>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -179,21 +199,29 @@ export default function AddCategory() {
                   onChange={handleUpload}
                 />
                 <label htmlFor="contained-button-file">
-                  <div className={classes.buttonDiv}>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      component="span"
-                      className={
-                        selectedFile === null
-                          ? classes.buttonDefault
-                          : classes.buttonUploaded
-                      }
-                    >
-                      Upload Image
-                    </Button>
-                    {selectedFile !== null && selectedFile.name}
-                  </div>
+                  <Grid container className={classes.buttonDiv}>
+                    <Grid item xs={12} md={6} className={classes.buttonItem}>
+                      {selectedFile === null ? (
+                        <img
+                          src={props.category.url}
+                          alt={props.category.name}
+                          className={classes.image}
+                        />
+                      ) : (
+                        selectedFile.name
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6} className={classes.buttonItem}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        component="span"
+                        className={classes.buttonDefault}
+                      >
+                        Update Image
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </label>
                 <FormControlLabel
                   control={

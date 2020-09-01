@@ -8,11 +8,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import Switch from "@material-ui/core/Switch";
-import IconButton from "@material-ui/core/IconButton";
-import UpdateIcon from "@material-ui/icons/Update";
 
 import ImageModal from "./ImageModal";
+import UpdateCategory from "./UpdateCategory";
+import EnabledStatus from "./EnabledStatus";
 
 const columns = [
   { id: "id", label: "ID", minWidth: 100 },
@@ -28,7 +27,7 @@ const columns = [
     minWidth: 170,
   },
   {
-    id: "enabled",
+    id: "status",
     label: "Enabled",
     minWidth: 170,
   },
@@ -96,23 +95,17 @@ export default function CatgoryTable(props) {
                             </TableCell>
                           );
 
-                        case "enabled":
+                        case "status":
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              <Switch
-                                checked
-                                color="secondary"
-                                name={row.name}
-                              />
+                              <EnabledStatus category={row} />
                             </TableCell>
                           );
 
                         case "update":
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              <IconButton color="primary" aria-label="Update">
-                                <UpdateIcon />
-                              </IconButton>
+                              <UpdateCategory category={row} />
                             </TableCell>
                           );
                         default:
