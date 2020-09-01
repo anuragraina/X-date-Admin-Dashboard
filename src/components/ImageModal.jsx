@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     maxHeight: "700px",
     width: "50%",
   },
+  imageButton: {
+    paddingLeft: "0px",
+  },
 }));
 
 export default function ImageModal(props) {
@@ -31,7 +34,11 @@ export default function ImageModal(props) {
 
   return (
     <>
-      <Button onClick={handleOpen} color="primary">
+      <Button
+        onClick={handleOpen}
+        color="primary"
+        className={classes.imageButton}
+      >
         View Image
       </Button>
       <Modal
@@ -43,7 +50,7 @@ export default function ImageModal(props) {
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 1000,
         }}
       >
         <Fade in={open}>
