@@ -11,9 +11,7 @@ import {
   Fade,
   Backdrop,
   Switch,
-  IconButton,
 } from "@material-ui/core";
-import UpdateIcon from "@material-ui/icons/Update";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -163,9 +161,9 @@ export default function UpdateCategory(props) {
 
   return (
     <>
-      <IconButton color="primary" aria-label="Update" onClick={handleOpen}>
-        <UpdateIcon />
-      </IconButton>
+      <Button color="primary" onClick={handleOpen}>
+        Edit
+      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

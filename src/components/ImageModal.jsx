@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Button, Modal, Fade, Backdrop } from "@material-ui/core";
+import { Modal, Fade, Backdrop } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   modal: {
     display: "flex",
     alignItems: "center",
@@ -15,10 +15,12 @@ const useStyles = makeStyles(theme => ({
     maxHeight: "700px",
     width: "50%",
   },
-  imageButton: {
-    paddingLeft: "0px",
+  thumbnail: {
+    width: "100px",
+    height: "50px",
+    cursor: "pointer",
   },
-}));
+});
 
 export default function ImageModal(props) {
   const classes = useStyles();
@@ -34,13 +36,12 @@ export default function ImageModal(props) {
 
   return (
     <>
-      <Button
+      <img
+        src={props.url}
+        className={classes.thumbnail}
+        alt="thumbnail"
         onClick={handleOpen}
-        color="primary"
-        className={classes.imageButton}
-      >
-        View Image
-      </Button>
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

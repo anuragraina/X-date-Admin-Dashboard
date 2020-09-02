@@ -7,30 +7,32 @@ export default function EnabledStatus(props) {
   const [enabled, setEnabled] = useState(props.category.active);
 
   const handleStatus = async () => {
-    const fd = new FormData();
-    fd.append("active", !enabled);
-    fd.append("category_id", props.category.id);
+    if (window.confirm("Are you sure?")) {
+      const fd = new FormData();
+      fd.append("active", !enabled);
+      fd.append("category_id", props.category.id);
 
-    try {
-      const response = await axios.post(
-        "https://xdate.ml/api/v1/post/category/ops/",
-        fd,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
+      try {
+        const response = await axios.post(
+          "https://xdate.ml/api/v1/post/category/ops/",
+          fd,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        },
-      );
+        );
 
-      if (response.status === 200) {
-        setEnabled(!enabled);
-        !enabled
-          ? alert(`Category ${props.category.name} ENABLED...`)
-          : alert(`Category ${props.category.name} DISABLED...`);
-        window.location.reload();
+        if (response.status === 200) {
+          setEnabled(!enabled);
+          !enabled
+            ? alert(`${props.category.name} ENABLED...`)
+            : alert(`${props.category.name} DISABLED...`);
+          window.location.reload();
+        }
+      } catch (err) {
+        alert(err.message);
       }
-    } catch (err) {
-      alert(err.message);
     }
   };
 

@@ -14,27 +14,31 @@ import UpdateCategory from "./UpdateCategory";
 import EnabledStatus from "./EnabledStatus";
 
 const columns = [
-  { id: "id", label: "ID", minWidth: 100 },
+  { id: "id", label: "ID", minWidth: 100, align: "center" },
   { id: "name", label: "Name", minWidth: 170 },
   {
     id: "image",
     label: "Image",
     minWidth: 170,
+    align: "center",
   },
   {
     id: "posts",
     label: "Posts",
     minWidth: 170,
+    align: "center",
   },
   {
     id: "status",
     label: "Enabled",
     minWidth: 170,
+    align: "center",
   },
   {
     id: "update",
     label: "Update",
     minWidth: 170,
+    align: "center",
   },
 ];
 
@@ -43,14 +47,14 @@ const useStyles = makeStyles({
     width: "100%",
   },
   container: {
-    maxHeight: 440,
+    maxHeight: 600,
   },
 });
 
 export default function CatgoryTable(props) {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const rows = props.categories;
 
@@ -124,7 +128,7 @@ export default function CatgoryTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[50, 75, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
