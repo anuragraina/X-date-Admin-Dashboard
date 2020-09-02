@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -128,7 +129,7 @@ export default function CatgoryTable(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[50, 75, 100]}
+        rowsPerPageOptions={[10, 25, 50, 75, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}

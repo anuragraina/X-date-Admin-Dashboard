@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import imageCompression from "browser-image-compression";
 import {
   Grid,
   Button,
@@ -88,11 +89,18 @@ export default function AddCategory() {
     setOpen(false);
   };
 
-  const handleUpload = event => {
-    const image = event.target.files[0];
+  const handleUpload = async event => {
+    const imageFile = event.target.files[0];
 
-    if (image.size < 1048576) setSelectedFile(event.target.files[0]);
-    else alert("Image size should be less than 1 MB!!!");
+    try {
+      const compressedFile = await imageCompression(imageFile, {
+        maxSizeMB: 1,
+      });
+
+      setSelectedFile(compressedFile);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCategory = event => {
