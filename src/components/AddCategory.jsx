@@ -12,6 +12,7 @@ import {
   Fade,
   Backdrop,
   Switch,
+  CircularProgress,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -49,6 +50,8 @@ const useStyles = makeStyles(theme => ({
   },
   buttonDiv: {
     display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   submitButton: {
     backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
@@ -77,6 +80,7 @@ export default function AddCategory() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [categoryName, setCategoryName] = useState("");
   const [enabled, setEnabled] = useState(true);
+  const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -86,20 +90,24 @@ export default function AddCategory() {
   const handleClose = () => {
     setCategoryName("");
     setSelectedFile(null);
+    setProgress(0);
     setOpen(false);
   };
 
   const handleUpload = async event => {
+    setSelectedFile(null);
+    setProgress(0);
     const imageFile = event.target.files[0];
 
     try {
       const compressedFile = await imageCompression(imageFile, {
         maxSizeMB: 1,
+        onProgress: setProgress,
       });
 
       setSelectedFile(compressedFile);
     } catch (error) {
-      console.log(error);
+      alert("Please choose a valid image file!!!");
     }
   };
 
@@ -116,7 +124,7 @@ export default function AddCategory() {
     if (categoryName !== "" && selectedFile !== null) {
       const fd = new FormData();
       fd.append("name", categoryName);
-      fd.append("file", selectedFile, "file");
+      fd.append("file", selectedFile, selectedFile.name);
       fd.append("active", enabled);
 
       try {
@@ -193,16 +201,24 @@ export default function AddCategory() {
                       color="primary"
                       component="span"
                       className={
-                        selectedFile === null
-                          ? classes.buttonDefault
-                          : classes.buttonUploaded
+                        progress > 0 || selectedFile !== null
+                          ? classes.buttonUploaded
+                          : classes.buttonDefault
                       }
                     >
                       Upload Image
                     </Button>
                     {selectedFile !== null && selectedFile.name}
+                    {progress > 0 && progress < 100 && (
+                      <CircularProgress
+                        color="secondary"
+                        variant="static"
+                        value={progress}
+                      />
+                    )}
                   </div>
                 </label>
+
                 <FormControlLabel
                   control={
                     <Switch
@@ -220,6 +236,7 @@ export default function AddCategory() {
                     type="submit"
                     onClick={handleSubmit}
                     className={classes.submitButton}
+                    disabled={!categoryName || !selectedFile}
                   >
                     Submit
                   </Button>

@@ -12,6 +12,7 @@ import {
   Fade,
   Backdrop,
   Switch,
+  CircularProgress,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
   },
   buttonDiv: {
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   buttonItem: {
@@ -80,6 +81,8 @@ export default function UpdateCategory(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [categoryName, setCategoryName] = useState(props.category.name);
   const [enabled, setEnabled] = useState(props.category.active);
+  const [progress, setProgress] = useState(0);
+  const [updated, setUpdated] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -89,29 +92,37 @@ export default function UpdateCategory(props) {
   const handleClose = () => {
     setCategoryName(props.category.name);
     setSelectedFile(null);
+    setProgress(0);
     setOpen(false);
   };
 
+  const handleCategory = event => {
+    setCategoryName(event.target.value);
+    setUpdated(true);
+  };
+
   const handleUpload = async event => {
+    setSelectedFile(null);
+    setProgress(0);
     const imageFile = event.target.files[0];
 
     try {
       const compressedFile = await imageCompression(imageFile, {
         maxSizeMB: 1,
+        onProgress: setProgress,
       });
 
       setSelectedFile(compressedFile);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  const handleCategory = event => {
-    setCategoryName(event.target.value);
+      setUpdated(true);
+    } catch (error) {
+      alert("Please choose a valid image file!!!");
+    }
   };
 
   const handleStatus = () => {
     setEnabled(!enabled);
+    setUpdated(true);
   };
 
   const handleSubmit = async e => {
@@ -131,7 +142,7 @@ export default function UpdateCategory(props) {
     }
 
     if (selectedFile !== null) {
-      fd.append("file", selectedFile, "file");
+      fd.append("file", selectedFile, selectedFile.name);
       flag++;
     }
 
@@ -207,17 +218,6 @@ export default function UpdateCategory(props) {
                 <label htmlFor="contained-button-file">
                   <Grid container className={classes.buttonDiv}>
                     <Grid item xs={12} md={6} className={classes.buttonItem}>
-                      {selectedFile === null ? (
-                        <img
-                          src={props.category.url}
-                          alt={props.category.name}
-                          className={classes.image}
-                        />
-                      ) : (
-                        selectedFile.name
-                      )}
-                    </Grid>
-                    <Grid item xs={12} md={6} className={classes.buttonItem}>
                       <Button
                         variant="outlined"
                         color="primary"
@@ -226,6 +226,25 @@ export default function UpdateCategory(props) {
                       >
                         Update Image
                       </Button>
+                    </Grid>
+                    <Grid item xs={12} md={6} className={classes.buttonItem}>
+                      {selectedFile === null ? (
+                        progress > 0 && progress < 100 ? (
+                          <CircularProgress
+                            color="secondary"
+                            variant="static"
+                            value={progress}
+                          />
+                        ) : (
+                          <img
+                            src={props.category.url}
+                            alt={props.category.name}
+                            className={classes.image}
+                          />
+                        )
+                      ) : (
+                        selectedFile.name
+                      )}
                     </Grid>
                   </Grid>
                 </label>
@@ -246,6 +265,7 @@ export default function UpdateCategory(props) {
                     type="submit"
                     onClick={handleSubmit}
                     className={classes.submitButton}
+                    disabled={!updated}
                   >
                     Submit
                   </Button>
