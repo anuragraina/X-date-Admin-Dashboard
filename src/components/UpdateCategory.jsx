@@ -93,6 +93,7 @@ export default function UpdateCategory(props) {
     setCategoryName(props.category.name);
     setSelectedFile(null);
     setProgress(0);
+    setUpdated(false);
     setOpen(false);
   };
 
