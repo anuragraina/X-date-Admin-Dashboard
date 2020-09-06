@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
-import imageCompression from "browser-image-compression";
+import React, { useState } from 'react';
+import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 import {
   Grid,
   Button,
@@ -13,62 +13,62 @@ import {
   Backdrop,
   Switch,
   CircularProgress,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(1),
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
     },
   },
   input: {
-    display: "none",
+    display: 'none',
   },
   button: {
-    margin: "1rem",
+    margin: '1rem',
     boxShadow: theme.customShadows.widget,
-    textTransform: "none",
-    "&:active": {
+    textTransform: 'none',
+    '&:active': {
       boxShadow: theme.customShadows.widgetWide,
     },
   },
   displayPaper: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "2rem",
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2rem',
   },
   buttonDefault: {
-    width: "100%",
+    width: '100%',
   },
   buttonUploaded: {
-    width: "50%",
-    marginRight: "1rem",
+    width: '50%',
+    marginRight: '1rem',
   },
   buttonDiv: {
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   submitButton: {
-    backgroundImage: "linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)",
-    color: "white",
-    "&:hover": {
-      backgroundImage: "linear-gradient(90deg, #FFBB94 0%, #FF889D 100%)",
+    backgroundImage: 'linear-gradient(270deg, #FFBB94 0%, #FF889D 100%)',
+    color: 'white',
+    '&:hover': {
+      backgroundImage: 'linear-gradient(90deg, #FFBB94 0%, #FF889D 100%)',
     },
   },
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
-    minWidth: "430px",
-    maxWidth: "600px",
-    width: "50%",
+    minWidth: '430px',
+    maxWidth: '600px',
+    width: '50%',
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 export default function AddCategory() {
   const classes = useStyles();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [categoryName, setCategoryName] = useState("");
+  const [categoryName, setCategoryName] = useState('');
   const [enabled, setEnabled] = useState(true);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
@@ -88,7 +88,7 @@ export default function AddCategory() {
   };
 
   const handleClose = () => {
-    setCategoryName("");
+    setCategoryName('');
     setSelectedFile(null);
     setProgress(0);
     setOpen(false);
@@ -107,7 +107,7 @@ export default function AddCategory() {
 
       setSelectedFile(compressedFile);
     } catch (error) {
-      alert("Please choose a valid image file!!!");
+      alert('Please choose a valid image file!!!');
     }
   };
 
@@ -121,25 +121,25 @@ export default function AddCategory() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (categoryName !== "" && selectedFile !== null) {
+    if (categoryName !== '' && selectedFile !== null) {
       const fd = new FormData();
-      fd.append("name", categoryName);
-      fd.append("file", selectedFile, selectedFile.name);
-      fd.append("active", enabled);
+      fd.append('name', categoryName);
+      fd.append('file', selectedFile, selectedFile.name);
+      fd.append('active', enabled);
 
       try {
         const response = await axios.post(
-          "https://xdate.ml/api/v1/post/category/",
+          'https://xdate.ml/api/v1/post/category/',
           fd,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
             },
           },
         );
 
         if (response.status === 200) {
-          alert("Category added successfully...");
+          alert('Category added successfully...');
           window.location.reload();
         }
       } catch (err) {
@@ -148,7 +148,7 @@ export default function AddCategory() {
 
       handleClose();
     } else {
-      alert("All fields are required!!!");
+      alert('All fields are required!!!');
     }
   };
 

@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-import Switch from "@material-ui/core/Switch";
+import Switch from '@material-ui/core/Switch';
 
 export default function EnabledStatus(props) {
   const [enabled, setEnabled] = useState(props.category.active);
 
   const handleStatus = async () => {
-    if (window.confirm("Are you sure?")) {
+    if (window.confirm('Are you sure?')) {
       const fd = new FormData();
-      fd.append("active", !enabled);
-      fd.append("category_id", props.category.id);
+      fd.append('active', !enabled);
+      fd.append('category_id', props.category.id);
 
       try {
         const response = await axios.post(
-          "https://xdate.ml/api/v1/post/category/ops/",
+          'https://xdate.ml/api/v1/post/category/ops/',
           fd,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              'Content-Type': 'multipart/form-data',
             },
           },
         );

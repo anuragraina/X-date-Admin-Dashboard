@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Modal, Fade, Backdrop } from "@material-ui/core";
+import React, { useState } from 'react';
+import { Modal, Fade, Backdrop } from '@material-ui/core';
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
-    minWidth: "430px",
-    maxWidth: "700px",
-    maxHeight: "700px",
-    width: "50%",
+    minWidth: '430px',
+    maxWidth: '700px',
+    maxHeight: '700px',
+    width: '50%',
   },
   thumbnail: {
-    width: "100px",
-    height: "50px",
-    cursor: "pointer",
+    width: '100px',
+    height: '50px',
+    cursor: 'pointer',
   },
 });
 
