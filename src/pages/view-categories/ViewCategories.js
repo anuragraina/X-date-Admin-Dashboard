@@ -25,7 +25,7 @@ export default function ViewCategories() {
 
   useEffect(() => {
     axios
-      .get('https://xdate.ml/api/v1/post/category/ops')
+      .get('https://xdate.ml/api/v1/post/category/ops/')
       .then(response => {
         setCategories(response.data.category);
       })
