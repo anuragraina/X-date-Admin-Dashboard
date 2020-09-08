@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -17,8 +18,8 @@ import UpdateCategory from './UpdateCategory';
 import EnabledStatus from './EnabledStatus';
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 100, align: 'center' },
-  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'id', label: 'ID', minWidth: 50 },
+  { id: 'nameSmall', label: 'Name', minWidth: 170 },
   {
     id: 'image',
     label: 'Image',
@@ -28,7 +29,7 @@ const columns = [
   {
     id: 'posts',
     label: 'Posts',
-    minWidth: 170,
+    minWidth: 50,
     align: 'center',
   },
   {
@@ -40,6 +41,18 @@ const columns = [
   {
     id: 'update',
     label: 'Update',
+    minWidth: 170,
+    align: 'center',
+  },
+  {
+    id: 'updated_at',
+    label: 'Modified',
+    minWidth: 170,
+    align: 'center',
+  },
+  {
+    id: 'created_at',
+    label: 'Created',
     minWidth: 170,
     align: 'center',
   },
@@ -145,12 +158,15 @@ EnhancedTableHead.propTypes = {
 //------------------Main Table-------------------------
 export default function CategoryTable(props) {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('desc');
-  const [orderBy, setOrderBy] = React.useState('id');
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('nameSmall');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
-  const rows = props.categories;
+  const rows = props.categories.map(category => ({
+    ...category,
+    nameSmall: category.name.toLowerCase(),
+  }));
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -167,6 +183,8 @@ export default function CategoryTable(props) {
     setPage(0);
   };
 
+  rows.length > 0 && console.log(moment(rows[0].created_at).fromNow());
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -177,19 +195,6 @@ export default function CategoryTable(props) {
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
           />
-          {/* <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead> */}
           <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -198,6 +203,12 @@ export default function CategoryTable(props) {
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                     {columns.map(column => {
                       switch (column.id) {
+                        case 'nameSmall':
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {row.name}
+                            </TableCell>
+                          );
                         case 'image':
                           return (
                             <TableCell key={column.id} align={column.align}>
@@ -218,11 +229,24 @@ export default function CategoryTable(props) {
                               <UpdateCategory category={row} />
                             </TableCell>
                           );
-                        default:
-                          const value = row[column.id];
+
+                        case 'updated_at':
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {value}
+                              {moment.utc(row.updated_at).fromNow()}
+                            </TableCell>
+                          );
+
+                        case 'created_at':
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {moment.utc(row.created_at).fromNow()}
+                            </TableCell>
+                          );
+                        default:
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {row[column.id]}
                             </TableCell>
                           );
                       }
