@@ -143,7 +143,7 @@ export default function AddCategory() {
           window.location.reload();
         }
       } catch (err) {
-        alert(err.message);
+        console.log(err);
       }
 
       handleClose();
