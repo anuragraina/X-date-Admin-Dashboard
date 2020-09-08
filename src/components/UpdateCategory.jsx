@@ -110,10 +110,15 @@ export default function UpdateCategory(props) {
     try {
       const compressedFile = await imageCompression(imageFile, {
         maxSizeMB: 1,
+        maxWidthOrHeight: 3000,
         onProgress: setProgress,
       });
 
-      setSelectedFile(compressedFile);
+      if (compressedFile.size > 1048575) {
+        alert('Extremely large image!!! Try uploading a smaller one.');
+      } else {
+        setSelectedFile(compressedFile);
+      }
 
       setUpdated(true);
     } catch (error) {
@@ -171,6 +176,7 @@ export default function UpdateCategory(props) {
         }
       } catch (err) {
         console.log(err);
+        alert(err.message);
       }
 
       handleClose();

@@ -102,10 +102,15 @@ export default function AddCategory() {
     try {
       const compressedFile = await imageCompression(imageFile, {
         maxSizeMB: 1,
+        maxWidthOrHeight: 3000,
         onProgress: setProgress,
       });
 
-      setSelectedFile(compressedFile);
+      if (compressedFile.size > 1048575) {
+        alert('Extremely large image!!! Try uploading a smaller one.');
+      } else {
+        setSelectedFile(compressedFile);
+      }
     } catch (error) {
       alert('Please choose a valid image file!!!');
     }
@@ -144,6 +149,7 @@ export default function AddCategory() {
         }
       } catch (err) {
         console.log(err);
+        alert(err.message);
       }
 
       handleClose();
